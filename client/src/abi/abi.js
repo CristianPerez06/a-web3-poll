@@ -1,26 +1,31 @@
 export const polls: AbiItem[] = [
   {
-    inputs: [],
-    name: "voteYes",
+    inputs: [
+      {
+        internalType: "bool",
+        name: "_value",
+        type: "bool",
+      },
+    ],
+    name: "vote",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
-    inputs: [],
-    name: "voteNo",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getYesVotes",
+    inputs: [
+      {
+        internalType: "address",
+        name: "addr",
+        type: "address",
+      },
+    ],
+    name: "getVoteByAddress",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "string",
         name: "",
-        type: "uint256",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -29,12 +34,17 @@ export const polls: AbiItem[] = [
   },
   {
     inputs: [],
-    name: "getNoVotes",
+    name: "getVotes",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "address[]",
         name: "",
-        type: "uint256",
+        type: "address[]",
+      },
+      {
+        internalType: "bool[]",
+        name: "",
+        type: "bool[]",
       },
     ],
     stateMutability: "view",

@@ -1,24 +1,40 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.7;
 
+import "./VoteMapping.sol";
+
 contract Polls {
-    // store the addresses of voters on the blockchain in these 2 arrays
-    address[] votedYes;
-    address[] votedNo;
+    using VoteMapping for VoteMapping.Map;
 
-    function voteYes() public {
-        votedYes.push(msg.sender);
+    uint count = 0;
+    VoteMapping.Map private map;
+
+    function vote(bool _value) public {
+        map.set(msg.sender, _value);
     }
 
-    function voteNo() public {
-        votedNo.push(msg.sender);
+    function getVoteByAddress(address addr) public view returns (string memory) {
+        if (!map.inserted[addr]) {
+            return '';
+        }
+
+        return map.values[addr] == true ? 'true' : 'false';
     }
 
-    function getYesVotes() public view returns (uint) {
-        return votedYes.length;
-    }
+    function getVotes() public view returns (address[] memory, bool[] memory) {
+        uint mapSize = map.size();
 
-    function getNoVotes() public view returns (uint) {
-        return votedNo.length;
+        address[] memory addresses = new address[](mapSize);
+        bool[] memory values = new bool[](mapSize);
+
+        for (uint i = 0; i < mapSize; i++) {
+            address key = map.getKeyAtIndex(i);
+            bool v = map.values[key];
+
+            addresses[i] = key;
+            values[i] = v;
+        }
+
+        return (addresses, values);
     }
 }
